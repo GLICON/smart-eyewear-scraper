@@ -146,7 +146,7 @@ smart-eyewear-scraper/
 
 ### Install
 ```bash
-git clone https://github.com/<your-username>/smart-eyewear-scraper.git
+git clone https://github.com/<GLICON>/smart-eyewear-scraper.git
 cd smart-eyewear-scraper
 python -m venv .venv
 source .venv/bin/activate          # Windows: .venv\Scripts\activate
