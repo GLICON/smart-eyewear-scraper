@@ -4,6 +4,7 @@ __pycache__/
 .pytest_cache/
 .venv/
 venv/
+sec/
 .env
 
 # Live-run outputs (re-created by main.py; scraped pages are not republished)
