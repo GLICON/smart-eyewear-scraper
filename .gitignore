@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+.env
+
+# Live-run outputs (re-created by main.py; scraped pages are not republished)
+data/raw/*
+data/processed/*
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+
+# OS / editors
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Saved demo/test pages are generated from tests/real_listings.py
+# (python tests/make_fixtures.py, or automatically by main.py and the tests)
+sample_data/*.html
+sample_data/*.csv
+tests/fixtures/
+
+!sample_data/.gitkeep
