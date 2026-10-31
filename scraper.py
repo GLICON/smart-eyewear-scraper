@@ -1,31 +1,38 @@
-"""Stage 3: open a FramesDirect listing page with Selenium."""
+"""Stage 5: open several FramesDirect listing pages with Selenium, politely."""
 import os
+import random
 import time
 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 
-URL = "https://www.framesdirect.com/eyeglasses/"
+BASE_URL = "https://www.framesdirect.com/eyeglasses/?p={page}"
+PAGES_TO_SCRAPE = 3
 
-# 1. Start a Chrome browser that Python can control
+os.makedirs("data/raw", exist_ok=True)
 driver = webdriver.Chrome()
 
-# 2. Open the listing page and give it time to load
-driver.get(URL)
-time.sleep(5)
+try:
+    for page in range(1, PAGES_TO_SCRAPE + 1):
+        url = BASE_URL.format(page=page)
+        print(f"Opening page {page}: {url}")
+        driver.get(url)
+        time.sleep(5)  # let the page finish loading
 
-# 3. Check we're on the right page
-print("Page title:", driver.title)
+        boxes = driver.find_elements(By.CLASS_NAME, "prod-holder")
+        print(f"  Product boxes found: {len(boxes)}")
+        if not boxes:
+            print("  No products on this page - stopping.")
+            break
 
-# 4. Find every product box using the class found in Stage 2
-boxes = driver.find_elements(By.CLASS_NAME, "prod-holder")
-print("Product boxes found:", len(boxes))
+        path = f"data/raw/framesdirect_page{page}.html"
+        with open(path, "w", encoding="utf-8") as f:
+            f.write(driver.page_source)
+        print(f"  Saved to {path}")
 
-# 5. Save the page's HTML so we can study it without visiting the site again
-os.makedirs("data/raw", exist_ok=True)
-with open("data/raw/framesdirect_page1.html", "w", encoding="utf-8") as f:
-    f.write(driver.page_source)
-print("Saved the page to data/raw/framesdirect_page1.html")
-
-# 6. Close the browser
-driver.quit()
+        # Be polite: wait a random 3-6 seconds before the next page
+        pause = random.uniform(3, 6)
+        print(f"  Waiting {pause:.1f} seconds...")
+        time.sleep(pause)
+finally:
+    driver.quit()  # always close the browser, even if something goes wrong
